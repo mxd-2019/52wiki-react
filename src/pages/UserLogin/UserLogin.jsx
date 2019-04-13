@@ -10,6 +10,11 @@ import {
 import IceIcon from "@icedesign/foundation-symbol";
 import { ComStr } from "../../Config/ComStr";
 import axios from "axios";
+import { ok } from "assert";
+import {fetchInitData,saveCookie,inputChange} from '../../Redux/action';
+// import store from '../../Redux/store'
+import {connect} from 'react-redux'
+
 
 const { Row, Col } = Grid;
 
@@ -21,21 +26,22 @@ class UserLogin extends Component {
 
   static defaultProps = {};
 
+  
+
   constructor(props) {
     super(props);
-    this.state = {
-      value: {
-        email: "",
-        password: ""
-      }
-    };
+    // this.state = {};
+      // store.subscribe(this.storeUpdate)
   }
 
-  formChange = value => {
-    this.setState({
-      value
-    });
-  };
+  
+
+  // storeUpdate=()=>{
+  //   this.state=store.getState()
+  //   // console.log(this.state.getIn(['login','value','user_name']))
+  //   console.log(this.state.GetInitData.getIn(['login','value']))
+  //   console.log('updated!')
+  // }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -45,20 +51,27 @@ class UserLogin extends Component {
         console.log("errors", errors);
         return;
       }
+      console.log(values)
+      console.log(this.props.login.value)
 
-      let url = "";//接口地址
+      let url = "https://result.eolinker.com/TV6CdYG4f1dcac5bcb1476793906f9fe77d1225aa60e231?uri=/user/login";//接口地址
+      
       fetch(url, {
         method: "POST",
-        credentials: "include",
+        credentials: "same-origin",
         body: values
       })
         .then(res => res.json())
         .then(json => {
+          console.log(json)
           //此处data为json格式返回信息，一些列判断之类的操作~
           if (json.status === 200) {
             if(json.data.code===0){
                  //假设判断完成登录非常成功
                  Message.success("登录成功！");
+                 //save cookie
+                 const action=saveCookie(json.data.token);
+                 store.dispatch(action);
                 //页面跳转
                 this.props.history.push("/");
             }else if(json.data.code===1){
@@ -72,6 +85,8 @@ class UserLogin extends Component {
           }
         })
         .catch(e => Message.error("请求错误：" + e));
+
+
     });
   };
 
@@ -80,15 +95,15 @@ class UserLogin extends Component {
       <div className="formContainer">
         <h4 className="formTitle">52wiki</h4>
         <IceFormBinderWrapper
-          value={this.state.value}
-          onChange={this.formChange}
+          value={this.props.login.value}
+          onChange={this.props.formChange}
           ref="form"
-        >
+        > 
           <div className="formItems">
             <Row className="formItem">
               <Col className="formItemCol">
                 <IceIcon type="person" size="small" className="inputIcon" />
-                <IceFormBinder name="email" required message="必填">
+                <IceFormBinder name="user_name" required message="必填">
                   <Input
                     className="next-input-single"
                     size="large"
@@ -105,7 +120,7 @@ class UserLogin extends Component {
             <Row className="formItem">
               <Col className="formItemCol">
                 <IceIcon type="lock" size="small" className="inputIcon" />
-                <IceFormBinder name="password" required message="必填">
+                <IceFormBinder name="user_password" required message="必填">
                   <Input
                     className="next-input-single"
                     size="large"
@@ -138,6 +153,29 @@ class UserLogin extends Component {
       </div>
     );
   }
+
 }
 
-export default UserLogin;
+
+const mapStateToProps=(state)=>{
+  return {
+    login:state.GetInitData.getIn(['login'])
+  }
+}
+
+const mapDispatchToProps=(dispatch)=>{
+  return {
+    formChange:(value)=>{
+       
+        // this.setState({
+        //   value
+        // });
+        console.log(value)
+        const action=inputChange(value);
+        dispatch(action)
+      
+    }
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(UserLogin);

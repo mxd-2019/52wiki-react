@@ -8,8 +8,15 @@ import {
   FormError as IceFormError
 } from "@icedesign/form-binder";
 import IceIcon from "@icedesign/foundation-symbol";
+import DynamicIcon from '@icedesign/dynamic-icon';
 
 const { Row, Col } = Grid;
+
+const CustomIcon = DynamicIcon.create({
+  fontFamily: 'iconfont',
+  prefix: 'icon',
+  css: '//at.alicdn.com/t/font_1132692_6bt2kq43pub.css', 
+});
 
 @withRouter
 class UserRegister extends Component {
@@ -60,6 +67,55 @@ class UserRegister extends Component {
     });
   };
 
+  nameAjax=()=>{
+      console.log(this.state.value.name)
+      const url=""
+      fetch(url,{
+        method: 'post',
+        body: this.state.value.name,
+    }).then(res=>res.json()).then(json=> {
+        if (json.status === 200) {
+            if(json.data.code===0){
+              console.log("用户名可用！")
+              Message.success('用户名可用!');
+            }else{
+              Message.error('用户名已存在!');
+            }
+            
+        }else {
+            console.log("网络连接出错!");
+            Message.error('网络连接出错!');
+        }
+
+        })
+  }
+
+  mailAjax=()=>{
+    console.log(this.state.value.email)
+
+    const url=""
+
+      fetch(url,{
+        method: 'post',
+        body: this.state.value.name,
+    }).then(res=>res.json()).then(json=> {
+        if (json.status === 200) {
+            if(json.data.code===0){
+              console.log("邮箱未注册！")
+              Message.success('邮箱未注册！');
+            }else{
+              Message.error('邮箱已注册！');
+            }
+            
+        }else {
+            console.log("网络连接出错!");
+            Message.error('网络连接出错!');
+        }
+
+        })
+    
+  }
+
   handleSubmit = () => {
     this.refs.form.validateAll((errors, values) => {
       if (errors) {
@@ -85,9 +141,7 @@ class UserRegister extends Component {
             if(json.data.code===0){
               console.log("Success to register!")
               Message.success('注册成功!');
-              this.props.history.push("/user/login");
-            }else{
-              Message.error('用户名已存在!');
+              // this.props.history.push("/#/user/login");
             }
             
         }else {
@@ -99,7 +153,7 @@ class UserRegister extends Component {
         
 
 
-      console.log(values);
+        console.log(values);
       
     });
   };
@@ -121,13 +175,14 @@ class UserRegister extends Component {
                   <IceFormBinder
                     name="name"
                     required
-                    message="请输入正确的用户名"
+                    message="请输入正确的用户名"            
                   >
                     <Input
                       className="next-input-single"
                       size="large"
                       placeholder="用户名"
-                    />
+                      onBlur={this.nameAjax}
+                    />     
                   </IceFormBinder>
                 </Col>
                 <Col>
@@ -149,6 +204,7 @@ class UserRegister extends Component {
                       size="large"
                       maxLength={20}
                       placeholder="邮箱"
+                      onBlur={this.mailAjax}
                     />
                   </IceFormBinder>
                 </Col>
