@@ -1,5 +1,6 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from "react";
+import BaseComponent from '../../components/BaseComponent'
 import { withRouter, Link } from "react-router-dom";
 import { Input, Button, Checkbox, Grid, Message } from "@alifd/next";
 import {
@@ -12,14 +13,13 @@ import { ComStr } from "../../Config/ComStr";
 import axios from "axios";
 import { ok } from "assert";
 import {fetchInitData,saveCookie,inputChange} from '../../Redux/action';
-// import store from '../../Redux/store'
 import {connect} from 'react-redux'
 
 
 const { Row, Col } = Grid;
 
 @withRouter
-class UserLogin extends Component {
+class UserLogin extends BaseComponent {
   static displayName = "UserLogin";
 
   static propTypes = {};
@@ -30,18 +30,8 @@ class UserLogin extends Component {
 
   constructor(props) {
     super(props);
-    // this.state = {};
-      // store.subscribe(this.storeUpdate)
   }
 
-  
-
-  // storeUpdate=()=>{
-  //   this.state=store.getState()
-  //   // console.log(this.state.getIn(['login','value','user_name']))
-  //   console.log(this.state.GetInitData.getIn(['login','value']))
-  //   console.log('updated!')
-  // }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -52,7 +42,7 @@ class UserLogin extends Component {
         return;
       }
       console.log(values)
-      console.log(this.props.login.value)
+      console.log(this.props.token)
 
       let url = "https://result.eolinker.com/TV6CdYG4f1dcac5bcb1476793906f9fe77d1225aa60e231?uri=/user/login";//接口地址
       
@@ -70,7 +60,7 @@ class UserLogin extends Component {
                  //假设判断完成登录非常成功
                  Message.success("登录成功！");
                  //save cookie
-                 const action=saveCookie(json.data.token);
+                 const action=saveToken(json.data.token);
                  store.dispatch(action);
                 //页面跳转
                 this.props.history.push("/");
@@ -95,8 +85,7 @@ class UserLogin extends Component {
       <div className="formContainer">
         <h4 className="formTitle">52wiki</h4>
         <IceFormBinderWrapper
-          value={this.props.login.value}
-          onChange={this.props.formChange}
+          // onChange={this.props.formChange}
           ref="form"
         > 
           <div className="formItems">
@@ -159,22 +148,12 @@ class UserLogin extends Component {
 
 const mapStateToProps=(state)=>{
   return {
-    login:state.GetInitData.getIn(['login'])
+    state:state.Login
   }
 }
 
 const mapDispatchToProps=(dispatch)=>{
   return {
-    formChange:(value)=>{
-       
-        // this.setState({
-        //   value
-        // });
-        console.log(value)
-        const action=inputChange(value);
-        dispatch(action)
-      
-    }
   }
 }
 

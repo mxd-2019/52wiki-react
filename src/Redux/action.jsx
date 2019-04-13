@@ -33,16 +33,9 @@ export const fetchInitData = (path, data) => {
   };
 };
 
-export const saveCookie = (cookie) => {
+export const saveToken = (token) => {
   return {
-    type: "save_cookie",
-    data: cookie
+    type: "save_token",
+    data: token
   };
 };
-
-export const inputChange=(input)=>{
-  return {
-      type:"input_change",
-      data:input
-  }
-}

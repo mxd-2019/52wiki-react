@@ -1,5 +1,6 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from "react";
+import BaseComponent from '../../components/BaseComponent'
 import { withRouter, Link } from "react-router-dom";
 import { Input, Button, Grid, Message } from "@alifd/next";
 import {
@@ -19,7 +20,7 @@ const CustomIcon = DynamicIcon.create({
 });
 
 @withRouter
-class UserRegister extends Component {
+class UserRegister extends BaseComponent {
   static displayName = "UserRegister";
 
   static propTypes = {};
@@ -61,11 +62,11 @@ class UserRegister extends Component {
     }
   };
 
-  formChange = value => {
-    this.setState({
-      value
-    });
-  };
+  // formChange = value => {
+  //   // this.setState({
+  //   //   value
+  //   // });
+  // };
 
   nameAjax=()=>{
       console.log(this.state.value.name)
@@ -91,7 +92,6 @@ class UserRegister extends Component {
   }
 
   mailAjax=()=>{
-    console.log(this.state.value.email)
 
     const url=""
 
@@ -152,20 +152,19 @@ class UserRegister extends Component {
         })
         
 
-
-        console.log(values);
       
     });
   };
 
   render() {
+    console.log('1')
     return (
       <div className="user-register">
         <div className="formContainer">
           <h4 className="formTitle">注 册</h4>
           <IceFormBinderWrapper
-            value={this.state.value}
-            onChange={this.formChange}
+            // value={this.state.value}
+            // onChange={this.formChange}
             ref="form"
           >
             <div className="formItems">
