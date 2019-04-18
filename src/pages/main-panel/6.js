@@ -1,4 +1,5 @@
 import React,{Component} from 'react'
+import Dashboard from '../Dashboard'
 
 
 class notes extends Component {
@@ -8,7 +9,9 @@ class notes extends Component {
     }
     render() {
         return (
-            <div>this is notes</div>
+            <div>
+                  <Dashboard></Dashboard>  
+            </div>
                         );
     }
 }

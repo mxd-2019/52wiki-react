@@ -82,8 +82,7 @@ export default class Admin extends Component {
                 </div>
 
                 <div id="main-panel">
-                <Link to='/user/login'>login</Link>
-                <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
+                {/* <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
                     <Item key="home">
                             <Link to='/admin/pages/1/0'>
                             主页
@@ -104,7 +103,7 @@ export default class Admin extends Component {
                             系统管理
                             </Link>
                     </Item>
-                </Nav>
+                </Nav> */}
                         {
                           routerdata.map(
                             (item,index)=>{
