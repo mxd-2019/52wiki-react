@@ -158,8 +158,6 @@ export default class Admin extends Component {
                     
                     <Balloon trigger={user_login}
                     triggerType="hover"
-                    visible={this.state.visible}
-                    onVisibleChange={this.handleVisibleChange.bind(this)}
                 >
                     {user_ballon}
                 </Balloon>
