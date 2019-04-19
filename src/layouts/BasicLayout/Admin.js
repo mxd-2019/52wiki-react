@@ -47,7 +47,7 @@ const user_login=(
                 />
               </div>
                   )
-const user_ballon=(
+const user_balloon=(
                     <ul>
               <li className="user-profile-menu-item">
                 <Link to="/admin/pages/1/1">
@@ -159,7 +159,7 @@ export default class Admin extends Component {
                     <Balloon trigger={user_login}
                     triggerType="hover"
                 >
-                    {user_ballon}
+                    {user_balloon}
                 </Balloon>
                 </Nav>
                         {
