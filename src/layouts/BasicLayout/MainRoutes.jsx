@@ -4,6 +4,15 @@ import NotFound from '../../components/NotFound';
 import {adminRouter} from '../../routerConfig';
 import Admin from './Admin'
 import {connect} from 'react-redux'
+import { Dialog } from '@alifd/next';
+
+const jump_to_login=(
+                      <Dialog
+                    title="请先登录"
+                    visible="true">
+                    即将跳转到登陆页面
+                </Dialog>
+                    )
 
 class MainRoutes extends Component {
   /**
@@ -54,7 +63,7 @@ class MainRoutes extends Component {
         {/* 未匹配到的路由重定向到 NotFound */}
         <Route component={NotFound} />
       </Switch>
-    ):("请重新登录");
+    ):({jump_to_login});
   }
 }
 
