@@ -15,8 +15,60 @@ const footer = <a className="login-in" href="/#/user/login">Login in</a>;
 import Test from '../../pages/main-panel/0'
 
 
-// import Pages from "../../pages/control-panel/pages.js";
-
+const user_login=(
+                  <div
+                className="ice-design-header-userpannel"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: 12,
+                }}
+              >
+                <IceImg
+                  height={40}
+                  width={40}
+//                   src={require('./images/avatar.png')}
+                  className="user-avatar"
+                />
+                <div className="user-profile">
+                  <span
+                    className="user-name"
+                    style={{ fontSize: '13px', color: '#666' }}
+                  >
+                    淘小宝
+                  </span>
+                  <br />
+                  <span className="user-department">技术部</span>
+                </div>
+                <Icon
+                  type="arrow-down-filling"
+                  size="xxs"
+                  className="icon-down"
+                />
+              </div>
+                  )
+const user_ballon=(
+                    <ul>
+              <li className="user-profile-menu-item">
+                <Link to="/admin/pages/1/1">
+                  <FoundationSymbol type="person" size="small" />
+                  我的主页
+                </Link>
+              </li>
+              <li className="user-profile-menu-item">
+                <Link to="/account/settings">
+                  <FoundationSymbol type="repair" size="small" />
+                  设置
+                </Link>
+              </li>
+              <li className="user-profile-menu-item">
+                <Link to="/user/login">
+                  <FoundationSymbol type="compass" size="small" />
+                  退出
+                </Link>
+              </li>
+            </ul>
+                  )
  
 export default class Admin extends Component {
 
@@ -82,7 +134,7 @@ export default class Admin extends Component {
                 </div>
 
                 <div id="main-panel">
-                {/* <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
+                <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
                     <Item key="home">
                             <Link to='/admin/pages/1/0'>
                             主页
@@ -103,7 +155,15 @@ export default class Admin extends Component {
                             系统管理
                             </Link>
                     </Item>
-                </Nav> */}
+                    
+                    <Balloon trigger={user_login}
+                    triggerType="hover"
+                    visible={this.state.visible}
+                    onVisibleChange={this.handleVisibleChange.bind(this)}
+                >
+                    {user_ballon}
+                </Balloon>
+                </Nav>
                         {
                           routerdata.map(
                             (item,index)=>{
