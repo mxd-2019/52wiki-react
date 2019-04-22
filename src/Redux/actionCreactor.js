@@ -35,11 +35,24 @@ export const dispatchInitData = (path, json) => {
   };
   
 
-export const inputchangeAction=(value)=>({
-    type:CHANGE_INPUT_VALUE,
-    value:value
-});
+export const inputchangeAction=(value)=>{
+    return {
+            type:CHANGE_INPUT_VALUE,
+            value:value
+    }
+};
 export const headerchangeAction=(value)=>({
     type:CHANGE_HEADER,
     value:value
 })
+export const isshowchangeAction=(value)=>({
+  type:'change_isShow',
+  value:value
+})
+export const saveloginAction=(value)=>{
+    return {
+      type:'savelogin',
+      value:value
+    }
+}
+

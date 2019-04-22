@@ -4,6 +4,9 @@ import NotFound from '../../components/NotFound';
 import {adminRouter} from '../../routerConfig';
 import Admin from './Admin'
 import {connect} from 'react-redux'
+import { Message,Dialog } from '@alifd/next';
+
+                    
 
 class MainRoutes extends Component {
   /**
@@ -24,37 +27,35 @@ class MainRoutes extends Component {
       const {history} = this.props;
       setTimeout(() => {
         history.replace("/user/login");
-      }, 1000)
+      }, 5000)
     }
 }
-  // renderNormalRoute = (item, index) => {
-  //   return item.component ? (
-  //     <Route
-  //       key={index}
-  //       path={item.path}
-  //       component={item.component}
-  //       exact={item.exact}
-  //     />
-  //   ) : null;
-  // };
 
   render() {
     console.log('11')
+    console.log(this.state.isAuthenticated)
     return this.state.isAuthenticated ? (
       <Switch>
         {/* 渲染路由表 */}
         {/* {adminRouter.map(this.renderNormalRoute)} */}
-        <Route exact path='/' component={Admin}/>
+        <Redirect exact from={['/','/admin']} to="/admin/pages/1/0" />
+        {/* <Route exact path='/' component={Admin}/> */}
         <Route path='/admin' component={Admin}/>
         {/* 根路由默认重定向到 /dashboard */}
         {/* <Redirect from="/" to="/admin" /> */}
 
-        <Redirect to="/user" />
+        {/* <Redirect to="/user"/> */}
 
         {/* 未匹配到的路由重定向到 NotFound */}
-        <Route component={NotFound} />
+        <Route component={NotFound}/>
       </Switch>
-    ):("请重新登录");
+    ):(
+      <Dialog
+                    title="跳转中"
+                    visible='true'>
+            即将跳转到登录页面
+      </Dialog>
+    );
   }
 }
 

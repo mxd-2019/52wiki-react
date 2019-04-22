@@ -12,7 +12,7 @@ import IceIcon from "@icedesign/foundation-symbol";
 import { ComStr } from "../../Config/ComStr";
 import axios from "axios";
 import { ok } from "assert";
-import {fetchInitData,saveCookie,inputChange} from '../../Redux/actionCreactor';
+import {fetchInitData,saveloginAction,inputChange} from '../../Redux/actionCreactor';
 import {connect} from 'react-redux'
 
 
@@ -42,7 +42,7 @@ class UserLogin extends Component {
         return;
       }
       console.log(values)
-      console.log(this.props.token)
+      // console.log(this.props.token)
 
       let url = "https://result.eolinker.com/TV6CdYG4f1dcac5bcb1476793906f9fe77d1225aa60e231?uri=/user/login";//接口地址
       
@@ -59,9 +59,9 @@ class UserLogin extends Component {
             if(json.data.code===0){
                  //假设判断完成登录非常成功
                  Message.success("登录成功！");
-                 //save cookie
-                 const action=saveToken(json.data.token);
-                 store.dispatch(action);
+                 //save user_info
+                 const action=saveloginAction(json.data.user_info);
+                 this.props.savelogininfo(action);
                 //页面跳转
                 this.props.history.push("/");
             }else if(json.data.code===1){
@@ -148,13 +148,17 @@ class UserLogin extends Component {
 
 const mapStateToProps=(state)=>{
   return {
-    state:state.Login
+    // state:{
+    //       login:state.Login
+    // }
   }
 }
 
 const mapDispatchToProps=(dispatch)=>{
   return {
-    
+      savelogininfo:function(action){
+          dispatch(action)
+      }
   }
 }
 

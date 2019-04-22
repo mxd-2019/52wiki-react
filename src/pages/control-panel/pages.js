@@ -56,18 +56,11 @@ class pages extends Component {
         return (
             <div >
                 <div className='header'>
-                <span id='title'>
-                    <span>PAGES</span>
+                    <span id='title'>
+                        <span>PAGES</span>  
+                        <span style={{fontWeight:'bold'}}>{this.props.state.get('header')}</span>
+                    </span>
                     
-                    <span style={{fontWeight:'bold'}}>{this.props.state.get('header')}</span>
-                </span>
-                                {/* <IceTitle 
-                            text="主标题"
-                            subtitle="副标题"
-                            link="http://www.taobao.com"
-                            decoration={true}
-                        /> */}
-                
                 </div>
                 <div className="input">
                     <Search style={{ width: 280 }} placeholder='Search' shape='simple' onSearch={()=>this.search()} onChange={(e)=>this.props.inputChange(e)} />

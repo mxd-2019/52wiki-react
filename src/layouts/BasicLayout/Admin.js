@@ -5,37 +5,89 @@ import { BrowserRouter as Router,Route, Redirect,Link } from 'react-router-dom';
 import {adminRouter} from '../../routerConfig';
 import routerdata from '../../pages/main-panel/routerConfig';
 import './index.css';
-import { Input,Nav,Search } from '@alifd/next';
+import { Input,Nav,Search,Icon, Balloon } from '@alifd/next';
+import FoundationSymbol from '@icedesign/foundation-symbol';
+import IceImg from '@icedesign/img';
+import {connect} from 'react-redux';
+import {isshowchangeAction} from '../../Redux/actionCreactor'
 
 const { Item, SubNav } = Nav;
 
 const header = <span className="fusion">52wiki</span>;
-const footer = <a className="login-in" href="/#/user/login">Login in</a>;
-
-import Test from '../../pages/main-panel/0'
 
 
-// import Pages from "../../pages/control-panel/pages.js";
 
+const user_balloon=(
+                    <ul>
+              <li>
+                <Link to="/admin/pages/1/1">
+                  <FoundationSymbol type="person" size="small" />
+                  我的主页
+                </Link>
+              </li>
+              <li>
+                <Link to="/account/settings">
+                  <FoundationSymbol type="repair" size="small" />
+                  设置
+                </Link>
+              </li>
+              <li>
+                <Link to="/user/login">
+                  <FoundationSymbol type="compass" size="small" />
+                  退出
+                </Link>
+              </li>
+            </ul>
+                  )
  
-export default class Admin extends Component {
+ class Admin extends Component {
 
-  constructor(){
-    super()
+
+   user_login=(
+    <div
+  className="header-userpannel"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    width:100,
+    float:"right",
+    margin:'0 50px 0 100px'
+  }}
+>
+  <IceImg
+    height={40}
+    width={40}
+//                   src={require('./images/avatar.png')}
+    style={{background:'blue',margin:5}}
+    className="user-avatar"
+  />
+  <div>
+    <span
+      // className="user-name"
+      style={{ fontSize: '20px' }}
+    >
+     {this.props.state.login.get('user_name')}
+    </span>
+  </div>
+  <Icon
+    type="arrow-down-filling"
+    size="xxs"
+    className="icon-down"
+  />
+</div>
+    );
+
+  constructor(props){
+    super(props)
   }
-  // nav_opt_click=(e)=>{
-  //   // onClick={(e)=>this.nav_opt_click(e)}
-  //   const nodes=e.currentTarget.parentNode.parentNode.parentNode.childNodes
-  //   // console.log(nodes)
-  //   const items=Array.prototype.slice.call(nodes,0)
-  //   console.log(items)
-  //   items.map((item,index)=>{
-  //     console.log(item.firstChild.firstChild)
-  //       item.firstChild.firstChild.setAttribute('class',' ')
-  //   })
-  //   e.currentTarget.setAttribute('class','nav_opt_click')
-  //   // this.props.history.push("/control-panel/pages");
-  // }
+
+  switch=()=>{
+    const isshow=!this.props.state.CtrPanel_Pages.get('isShow');
+    console.log(isshow)
+    const action=isshowchangeAction(isshow);
+    this.props.isshowchange(action)
+
+  }
 
   render() {
     const nav=['PAGES','NOTES','CONSOLES']
@@ -44,7 +96,7 @@ export default class Admin extends Component {
       
       <div id='container'>
           <div id="nav">
-          <Nav style={{ width: 100,height:'100vh' }} defaultOpenAll='true' type='normal'>
+          <Nav style={{ width: 100,height:'350px' }} defaultOpenAll='true' type='normal'>
             <SubNav style={{height:'30px' }}>
             {nav.map((value,index)=>{
                   return (
@@ -65,10 +117,14 @@ export default class Admin extends Component {
             </SubNav>    
           </Nav>
 
+          <div style={{float:'right',width:50,height:70,textAlign:"center"}}>
+              <i class="iconfont icon-fangxiang" style={{fontSize:50}} onClick={this.switch}></i>
+          </div>
+
             
           </div>
 
-              <div id="control-panel">
+              <div id="control-panel" className={this.props.state.CtrPanel_Pages.get('isShow')?'':'hide'}>
                         {/* <Route path="/control-panel/pages" component={Pages}/> */}
                         {
                             adminRouter.map(
@@ -81,8 +137,9 @@ export default class Admin extends Component {
                         }
                 </div>
 
-                <div id="main-panel">
-                {/* <Nav className="basic-nav" direction="hoz" type="primary" header={header} footer={footer} defaultSelectedKeys={['home']} triggerType="hover">
+                <div id="main-panel" className={this.props.state.CtrPanel_Pages.get('isShow')?'':'shift'}>
+                <Nav className="basic-nav" direction="hoz" type="primary" header={header}  defaultSelectedKeys={['home']} triggerType="hover">
+
                     <Item key="home">
                             <Link to='/admin/pages/1/0'>
                             主页
@@ -103,7 +160,18 @@ export default class Admin extends Component {
                             系统管理
                             </Link>
                     </Item>
-                </Nav> */}
+                      {/* <Item> */}
+                      <Search style={{ width: 280,margin:'0 0 0 100px' }} placeholder='Search' shape='simple' />
+                      {/* </Item> */}
+
+                    <Balloon trigger={this.user_login}
+                    triggerType="hover"
+                    align='bl'
+                >
+                    {user_balloon}
+                </Balloon>
+                    
+                </Nav>
                         {
                           routerdata.map(
                             (item,index)=>{
@@ -115,12 +183,29 @@ export default class Admin extends Component {
                         }
 
                 </div>
-
-
-          
       </div>
       
         
     );
   }
 }
+
+const mapStateToProps=(state)=>{
+    return {
+      state:{
+        login:state.Login,
+        CtrPanel_Pages:state.CtrPanel_Pages
+      }
+    }
+}
+
+const mapDispatchToProps=(dispatch)=>{
+  return {
+        isshowchange:function(action){
+          dispatch(action)
+        }
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Admin);
